@@ -1,0 +1,40 @@
+{
+  "name": "awesome-websocket",
+  "version": "1.0.0",
+  "description": "Educational streaming chat service powered by WebSocket and TypeScript.",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "npm run build:server && npm run build:client",
+    "build:server": "tsc -p tsconfig.json",
+    "build:client": "esbuild client/main.tsx --bundle --format=esm --target=es2017 --outfile=public/assets/app.js --tsconfig=tsconfig.client.json --minify --sourcemap --define:process.env.NODE_ENV=\\\"production\\\"",
+    "watch:server": "tsc -p tsconfig.json --watch",
+    "watch:client": "esbuild client/main.tsx --bundle --format=esm --target=es2017 --outfile=public/assets/app.js --tsconfig=tsconfig.client.json --sourcemap --define:process.env.NODE_ENV=\\\"development\\\" --watch",
+    "dev": "ts-node --project tsconfig.json src/server.ts",
+    "start": "node dist/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blotusyan/awesome-websocket.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/blotusyan/awesome-websocket/issues"
+  },
+  "homepage": "https://github.com/blotusyan/awesome-websocket#readme",
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "ws": "^8.18.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.6",
+    "@types/react-dom": "^19.2.3",
+    "@types/ws": "^8.18.1",
+    "esbuild": "^0.27.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
