@@ -1,0 +1,11 @@
+node_modules
+npm-debug.log
+Dockerfile
+Dockerfile.*
+.git
+.gitignore
+infra/node_modules
+infra/dist
+dist
+public/assets/app.js
+public/assets/app.js.map

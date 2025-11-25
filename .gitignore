@@ -3,3 +3,5 @@ node_modules
 dist
 public/assets/*.js
 public/assets/*.js.map
+infra/cdk.out
+infra/*.pem
