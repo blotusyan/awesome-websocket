@@ -74,6 +74,8 @@ export function App() {
    * (user initiate send) App.tsx -> ChatComposer -> hanldeDraftChange -> sendChunk (this is where user types in the chat section
    * gets sent to the server)
    * 
+   * This means client code is responsible for both the role of sender(message creator/initiator) and listener(message consumer)
+   * 
    * server.ts -> ChatGateway -> WebSocketServer -> register(on-message)(ChatGateway.ts)
    * -> handleMessage(ChatRoom.ts) -> messeager.chunk(ChatRoom.ts)
    * 
