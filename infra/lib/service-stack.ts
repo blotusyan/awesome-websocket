@@ -47,6 +47,7 @@ export class ServiceNestedStack extends NestedStack {
     });
     asgSecurityGroup.addIngressRule(lbSecurityGroup, Port.tcp(appPort));
 
+    /** Bootstrap EC2 instances with Docker and run the container */
     const userData = UserData.forLinux();
     userData.addCommands(
       'sudo yum update -y',
@@ -90,12 +91,16 @@ export class ServiceNestedStack extends NestedStack {
       vpcSubnets: { subnetType: SubnetType.PUBLIC }
     });
 
+    /** TODO(wayne): hot swap to https */
     const listener = alb.addListener('HttpListener', {
       port: 80,
       protocol: ApplicationProtocol.HTTP,
       open: true
     });
 
+    /** Port 3000 hosts both the HTTP static server (for the initial page load) 
+     * and the WebSocket gateway (for real-time chat). 
+     * The ALB simply forwards 80→3000, and inside the instance httpserver handles everything. */
     listener.addTargets('AsgTarget', {
       port: appPort,
       protocol: ApplicationProtocol.HTTP,
