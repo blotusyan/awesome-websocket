@@ -72,7 +72,11 @@ export function App() {
    * (including the original sender) and sends the broadcast message. 
    * So a single client write becomes a server-side broadcast to all websockets.
    * 
-   * // BLACK BOX SERVER BROADCAST STUB //
+   * (user initiate send) App.tsx -> ChatComposer -> hanldeDraftChange -> sendChunk (this is where user types in the chat section
+   * gets sent to the server)
+   * 
+   * This means client code is responsible for both the role of sender(message creator/initiator) and listener(message consumer)
+   * 
    * server.ts -> ChatGateway -> WebSocketServer -> register(on-message)(ChatGateway.ts)
    * -> handleMessage(ChatRoom.ts) -> messeager.chunk(ChatRoom.ts) -> socket.send() bare metal
    * 
