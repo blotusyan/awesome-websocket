@@ -11,6 +11,9 @@ export class NetworkingNestedStack extends NestedStack {
     this.vpc = new Vpc(this, 'AppVpc', {
       maxAzs: 2,
       natGateways: 1,
+      /**
+       * public subnets accept traffic, private subnets run the app
+       */
       subnetConfiguration: [
         {
           name: 'public',
