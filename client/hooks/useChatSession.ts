@@ -27,9 +27,14 @@ export function useChatSession(displayName: string) {
         setMessages((currentMessages) => [...currentMessages, createSystemEntry(envelope.payload.text)]);
         break;
       case ServerEnvelopeType.StreamChunk:
+        /**
+         * In this app, sendChunk sends the full current draft on each change, 
+         * so the server broadcasts the latest full draft and the client overwrites the previous value.
+         */
         setDrafts((currentDrafts) => applyDraft(currentDrafts, envelope.payload.author, envelope.payload.chunk));
         break;
       case ServerEnvelopeType.MessageCommitted:
+        /** create message entry with author, kind, text and timestamp fields */
         setMessages((currentMessages) => [...currentMessages, createMessageEntry(envelope.payload)]);
         setDrafts((currentDrafts) => applyDraft(currentDrafts, envelope.payload.author, ''));
         break;
@@ -48,6 +53,14 @@ export function useChatSession(displayName: string) {
     socket.addEventListener('open', () => setStatus(ConnectionState.Online));
     socket.addEventListener('close', goOffline);
     socket.addEventListener('error', goOffline);
+    /**
+     * server envelop is a combination of multi types
+     * export type ServerEnvelope =
+       | SystemEnvelope
+       | BroadcastChunkEnvelope
+       | BroadcastCommitEnvelope
+       | ParticipantsEnvelope;
+     */
     socket.addEventListener('message', (event) => {
       const envelope = parseServerEnvelope(event.data);
       if (envelope) {

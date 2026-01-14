@@ -7,8 +7,17 @@ interface ChatHeaderProps {
   status: ConnectionState;
 }
 
+/**
+ * Render the chat header by returning the html dom
+ */
 export function ChatHeader({ participants, status }: ChatHeaderProps) {
+  /**
+   * tells the number of explorers
+   */
   const participantLabel = formatParticipants(participants);
+  /**
+   * connected / offline / connecting
+   */
   const statusText = formatStatus(status);
 
   return (

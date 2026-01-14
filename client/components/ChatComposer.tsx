@@ -7,6 +7,9 @@ interface ChatComposerProps {
   onSubmit: () => void;
 }
 
+/**
+ * onDraftChange and onSubmit callbacks are passed with brackets
+ */
 export function ChatComposer({ draft, canSend, onDraftChange, onSubmit }: ChatComposerProps) {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -23,6 +26,7 @@ export function ChatComposer({ draft, canSend, onDraftChange, onSubmit }: ChatCo
         onChange={(event) => onDraftChange(event.target.value)}
         disabled={!canSend}
       />
+      {/* handler is handleSubmit*/}
       <button type="submit" disabled={!canSend}>
         Send message
       </button>

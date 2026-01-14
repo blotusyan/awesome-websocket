@@ -50,6 +50,7 @@ export function App() {
   const { status, participants, messages, drafts, sendChunk, commitMessage } = useChatSession(displayName);
   const canSend = status === ConnectionState.Online;
 
+  /** these two functions are where user typing is sent to server and for later broadcast */
   const handleDraftChange = (value: string) => {
     setDraft(value);
     sendChunk(value);
@@ -71,10 +72,13 @@ export function App() {
    * (including the original sender) and sends the broadcast message. 
    * So a single client write becomes a server-side broadcast to all websockets.
    * 
+   * // BLACK BOX SERVER BROADCAST STUB //
    * server.ts -> ChatGateway -> WebSocketServer -> register(on-message)(ChatGateway.ts)
-   * -> handleMessage(ChatRoom.ts) -> messeager.chunk(ChatRoom.ts)
+   * -> handleMessage(ChatRoom.ts) -> messeager.chunk(ChatRoom.ts) -> socket.send() bare metal
    * 
-   * App.tsx -> WebSocket add listener (useChatSession.ts) -> when message comes -> handleEnvelope (useChatSession.ts)
+   * ChatComposer -> handleDraftChange(App.tsx) -> sendDraft() to websocket server (App.tsx) -> -> socket.send() bare metal
+   * // BLACK BOX SERVER BROADCAST STUB //
+   * WebSocket add listener (useChatSession.ts) -> when message comes -> handleEnvelope (useChatSession.ts)
    * -> setDrafts (useChatSession.ts) -> DraftPanel[draft] (DraftPanel.tsx) -> re-render draft panel
    */
   return (
@@ -93,6 +97,7 @@ export function App() {
         </label>
         <label>
           Live drafts
+          {/** ChatComposer is different from DraftPanel, ChatComposer is for user input, DraftPanel is for broadcast display */}
           <DraftPanel drafts={drafts} />
         </label>
       </section>
@@ -102,6 +107,7 @@ export function App() {
         <ChatLog messages={messages} />
       </section>
 
+      {/* That composer is where draft messages are converted to committed messages, ie two sections above */}
       <ChatComposer draft={draft} canSend={canSend} onDraftChange={handleDraftChange} onSubmit={handleSubmit} />
     </main>
   );
